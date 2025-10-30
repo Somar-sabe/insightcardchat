@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ChatGPT-like UI (Static)</title>
+  <title>ChatGPT-like UI (Laptop Demo)</title>
   <style>
     :root{
       --bg:#0b1020;
@@ -50,13 +50,20 @@
     .dot:nth-child(3){animation-delay:0.3s}
     @keyframes blink{0%{opacity:0.2}40%{opacity:1}100%{opacity:0.2}}
 
+    /* Laptop card */
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:10px;text-align:center}
+    .card img{width:100%;border-radius:8px;margin-bottom:6px}
+    .card-name{font-weight:600;margin-bottom:4px}
+    .card-price{color:var(--muted)}
+
     /* Responsive */
     @media(max-width:900px){
       .sidebar{display:none}
       .app{padding:12px}
+      .cards{grid-template-columns:1fr}
     }
 
-    /* small touches */
     .footer-note{font-size:13px;color:var(--muted);padding:8px}
   </style>
 </head>
@@ -71,9 +78,7 @@
         </div>
       </div>
       <button class="new-btn" id="newConv">+ New chat</button>
-      <div class="conversations" id="conversations">
-        <!-- conversation items go here -->
-      </div>
+      <div class="conversations" id="conversations"></div>
       <div class="footer-note">Built with HTML/CSS/JS — frontend only</div>
     </aside>
 
@@ -88,7 +93,7 @@
 
       <div class="messages" id="messages" aria-live="polite">
         <div class="msg assistant" data-id="m1">
-          <div>Hello! This is a static Chat UI demo. Type a message below and press Send.</div>
+          <div>Hello! Ask me for a laptop recommendation.</div>
           <div class="meta">Assistant • just now</div>
         </div>
       </div>
@@ -101,39 +106,36 @@
   </div>
 
   <script>
-    // Basic chat UI logic — frontend only
-    const conversationsEl = document.getElementById('conversations');
     const messagesEl = document.getElementById('messages');
     const inputEl = document.getElementById('input');
     const sendBtn = document.getElementById('send');
-    const newBtn = document.getElementById('newConv');
 
-    // helper: append conversation item
-    function addConversation(title){
-      const el = document.createElement('div');
-      el.className = 'conv';
-      el.innerHTML = '<div class="icon">💬</div><div style="flex:1"><div style="font-weight:600">'+title+'</div><div style="font-size:12px;color:var(--muted)">Empty</div></div>';
-      el.addEventListener('click',()=>{
-        // simple behavior: clear messages and show a starter
-        messagesEl.innerHTML = '';
-        pushAssistant('Loaded conversation: '+title);
-      });
-      conversationsEl.prepend(el);
+    const laptops = {
+      Apple: [
+        { name:"MacBook Air M2", price:999, image:"https://m.media-amazon.com/images/I/71jG+e7roXL._AC_SL1500_.jpg" },
+        { name:"MacBook Pro 14”", price:1799, image:"https://m.media-amazon.com/images/I/61vFO3R5UNL._AC_SL1500_.jpg" }
+      ],
+      Dell: [
+        { name:"Dell XPS 13", price:1099, image:"https://m.media-amazon.com/images/I/71P5TCLJtsL._AC_SL1500_.jpg" },
+        { name:"Dell Inspiron 15", price:799, image:"https://m.media-amazon.com/images/I/71O4jzRtbxL._AC_SL1500_.jpg" }
+      ],
+      HP: [
+        { name:"HP Spectre x360", price:1249, image:"https://m.media-amazon.com/images/I/71mA1qczwUL._AC_SL1500_.jpg" },
+        { name:"HP Pavilion 14", price:699, image:"https://m.media-amazon.com/images/I/91wFvPZ+H7L._AC_SL1500_.jpg" }
+      ]
+    };
+
+    let step = "idle";
+    let selectedBrand = null;
+
+    function escapeHtml(unsafe){
+      return unsafe.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"})[m]);
     }
-
-    // two starter conversations
-    addConversation('General');
-    addConversation('Ideas');
-
-    newBtn.addEventListener('click',()=>{
-      const n = 'Chat ' + (conversationsEl.children.length + 1);
-      addConversation(n);
-    });
 
     function pushUser(text){
       const el = document.createElement('div');
       el.className = 'msg user';
-      el.innerHTML = '<div>' + escapeHtml(text) + '</div><div class="meta">You • just now</div>';
+      el.innerHTML = '<div>'+escapeHtml(text)+'</div><div class="meta">You • just now</div>';
       messagesEl.appendChild(el);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
@@ -141,54 +143,84 @@
     function pushAssistant(text){
       const el = document.createElement('div');
       el.className = 'msg assistant';
-      el.innerHTML = '<div>' + escapeHtml(text) + '</div><div class="meta">Assistant • just now</div>';
+      el.innerHTML = '<div>'+escapeHtml(text)+'</div><div class="meta">Assistant • just now</div>';
       messagesEl.appendChild(el);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    function escapeHtml(unsafe){
-      return unsafe.replace(/[&<>"']/g, function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"})[m];});
+    function pushLaptopOptions(options){
+      const el = document.createElement('div');
+      el.className = 'msg assistant';
+      let html = '<div>Choose a brand:</div><div class="cards">';
+      options.forEach(b=>{
+        html+='<button style="padding:6px 10px;border-radius:8px;margin:4px;background:#10a37f;color:black;font-weight:600;cursor:pointer" onclick="selectBrand(\''+b+'\')">'+b+'</button>';
+      });
+      html+='</div><div class="meta">Assistant • just now</div>';
+      el.innerHTML = html;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    // simulate a typing assistant with delay
-    async function simulateAssistantReply(userText){
-      // show typing indicator
-      const indicator = document.createElement('div');
-      indicator.className = 'msg assistant';
-      indicator.innerHTML = '<div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="meta">Assistant • typing...</div>';
-      messagesEl.appendChild(indicator);
+    function selectBrand(brand){
+      selectedBrand = brand;
+      pushUser(brand);
+      pushAssistant("Great! What’s your budget?");
+      step = "budget";
+      // show budget options
+      const el = document.createElement('div');
+      el.className = 'msg assistant';
+      const ranges = ["Under $800","$800–$1200","Above $1200"];
+      let html = '<div>Select budget:</div><div class="cards">';
+      ranges.forEach(r=>{
+        html+='<button style="padding:6px 10px;border-radius:8px;margin:4px;background:#10a37f;color:black;font-weight:600;cursor:pointer" onclick="selectBudget(\''+r+'\')">'+r+'</button>';
+      });
+      html+='</div><div class="meta">Assistant • just now</div>';
+      el.innerHTML = html;
+      messagesEl.appendChild(el);
       messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
 
-      // fake thinking time proportional to length
-      const wait = Math.min(1200 + userText.length * 15, 2500);
-      await new Promise(r=>setTimeout(r, wait));
-
-      // replace indicator with actual message
-      messagesEl.removeChild(indicator);
-      pushAssistant('Echo: ' + userText + '\n\n(This is a frontend demo. To connect to a real model, call an API from your server.)');
+    function selectBudget(range){
+      pushUser(range);
+      const filtered = laptops[selectedBrand].filter(l=>{
+        if(range==="Under $800") return l.price<800;
+        if(range==="$800–$1200") return l.price>=800 && l.price<=1200;
+        if(range==="Above $1200") return l.price>1200;
+        return true;
+      });
+      const el = document.createElement('div');
+      el.className = 'msg assistant';
+      let html = '<div>Here are matching laptops:</div><div class="cards">';
+      filtered.forEach(l=>{
+        html+='<div class="card"><img src="'+l.image+'" alt="'+l.name+'"><div class="card-name">'+l.name+'</div><div class="card-price">$'+l.price+'</div></div>';
+      });
+      html+='</div><div class="meta">Assistant • just now</div>';
+      el.innerHTML = html;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      step="results";
     }
 
     sendBtn.addEventListener('click',()=>{
       const text = inputEl.innerText.trim();
       if(!text) return;
       pushUser(text);
-      inputEl.innerText = '';
-      simulateAssistantReply(text);
+      inputEl.innerText='';
+      if(text.toLowerCase().includes("laptop") && step==="idle"){
+        pushLaptopOptions(Object.keys(laptops));
+        step="brand";
+      } else {
+        pushAssistant("Try asking for a laptop recommendation!");
+      }
     });
 
-    // allow Enter to send, Shift+Enter for newline
     inputEl.addEventListener('keydown',(e)=>{
-      if(e.key === 'Enter' && !e.shiftKey){
+      if(e.key==='Enter' && !e.shiftKey){
         e.preventDefault();
         sendBtn.click();
       }
     });
-
-    // keyboard focus
     inputEl.focus();
-
-    // small accessibility: announce new messages (aria-live is on messages container)
-
   </script>
 </body>
 </html>
