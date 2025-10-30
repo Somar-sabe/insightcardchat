@@ -220,5 +220,98 @@
     });
     inputEl.focus();
   </script>
+  <style>
+    /* Container for the composer */
+.composer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #303030; /* dark mode bg */
+  border-radius: 28px;
+  padding: 8px 12px;
+  gap: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+
+/* Focus effect */
+.composer-container:focus-within {
+  background-color: #3a3a3a;
+}
+
+/* Contenteditable input */
+.composer-input {
+  flex: 1;
+  min-height: 40px;
+  outline: none;
+  background: transparent;
+  color: #e6eef6;
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 6px 8px;
+  border-radius: 20px;
+  overflow-y: auto;
+}
+
+/* Placeholder for contenteditable */
+.composer-input:empty::before {
+  content: attr(data-placeholder);
+  color: #96a0b8;
+  pointer-events: none;
+}
+
+/* Buttons inside composer */
+.composer-btn {
+  background: #10a37f;
+  border: none;
+  color: black;
+  padding: 6px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.composer-btn:hover {
+  opacity: 0.8;
+}
+
+.composer-plus-btn {
+  width: 32px;
+  height: 32px;
+}
+
+/* Voice / dictation button */
+.composer-voice-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #505050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #e6eef6;
+  transition: background 0.2s;
+}
+
+.composer-voice-btn:hover {
+  background-color: #616161;
+}
+
+/* Grid layout like ChatGPT uses internally */
+.composer-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+  </style>
 </body>
 </html>
