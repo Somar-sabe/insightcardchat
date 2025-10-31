@@ -112,13 +112,28 @@
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar">
-      <div class="logo" style="text-align:center;">
-        <a style="text-decoration:none;" class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-700 hover:to-pink-700 transition-all duration-300" href="/">InsightCart</a>
+ <aside class="sidebar">
+      <div>
+        <div class="logo" style="text-align:center;">
+          <a
+            style="text-decoration:none;"
+            class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+            href="#"
+          >InsightCart</a>
+        </div>
+
+        <button class="new-btn" id="newConv">+ New chat</button>
+
+        <div class="conversations" id="conversations">
+          <div class="chat-item">💬 Order Status Inquiry</div>
+          <div class="chat-item">🛒 Product Availability</div>
+          <div class="chat-item">📦 Shipping and Returns</div>
+          <div class="chat-item">💡 Suggest a Product</div>
+          <div class="chat-item">🤖 General Assistance</div>
+        </div>
       </div>
-      <button style="color:white;" class="new-btn" id="newConv">+ New chat</button>
-      <div class="conversations" id="conversations"></div>
-      <div class="footer-note">InsightCart</div>
+
+      <div class="footer-note">InsightCart © 2025</div>
     </aside>
 
     <main class="panel">
