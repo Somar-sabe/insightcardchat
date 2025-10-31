@@ -5,6 +5,79 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Insight Card</title>
   <style>
+    .input-area {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-top: 1px solid #2a2b32;
+  background: #343541;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #b4b4b4;
+  cursor: pointer;
+  padding: 6px;
+  transition: color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #fff;
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #40414f;
+  border: 1px solid #565869;
+  border-radius: 12px;
+  padding: 8px 10px;
+  position: relative;
+}
+
+.input {
+  flex: 1;
+  color: #e3e3e3;
+  background: transparent;
+  outline: none;
+  border: none;
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.95rem;
+}
+
+.input:empty:before {
+  content: attr(placeholder);
+  color: #888;
+  pointer-events: none;
+}
+
+.send {
+  background: #19c37d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  transition: background 0.2s ease;
+}
+
+.send:hover {
+  background: #00a86b;
+}
+
     :root{
       --bg:#0b1020;
       --panel:#0f1724;
