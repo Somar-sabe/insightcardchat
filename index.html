@@ -144,6 +144,85 @@
       margin-bottom: 10px;
       text-align: left;
     }
+/* === Header Bar === */
+.main-header {
+  background: #202123;
+  color: #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  border-bottom: 1px solid #2a2b32;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-left .header-logo {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: opacity 0.2s;
+}
+
+.header-left .header-logo:hover {
+  opacity: 0.85;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-btn {
+  color: #e3e3e3;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid #565869;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.header-btn:hover {
+  background: #3c3d4a;
+  color: #fff;
+}
+
+.lang-select {
+  background: #343541;
+  color: #e3e3e3;
+  border: 1px solid #565869;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.lang-select:hover {
+  background: #3c3d4a;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header-right {
+    gap: 8px;
+  }
+
+  .header-btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .lang-select {
+    padding: 4px 8px;
+  }
+}
 
     .brand-products {
       display: flex;
@@ -184,6 +263,22 @@
   </style>
 </head>
 <body>
+  <header class="main-header">
+  <div class="header-left">
+    <a href="/" class="header-logo">InsightCart</a>
+  </div>
+
+  <div class="header-right">
+    <select class="lang-select" id="langSelect">
+      <option value="en">English</option>
+      <option value="ar">العربية</option>
+    </select>
+
+    <a href="login.html" class="header-btn">Login</a>
+    <a href="signup.html" class="header-btn">Sign Up</a>
+  </div>
+</header>
+
   <div class="app">
  <aside class="sidebar">
       <div>
