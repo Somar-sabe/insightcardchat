@@ -151,10 +151,25 @@
         </div>
       </div>
 
-      <div class="input-area">
-        <div contenteditable="true" class="input" id="input" role="textbox" aria-label="Message input"></div>
-        <button class="send" id="send">Send</button>
-      </div>
+<div class="input-area">
+  <button class="icon-btn" id="attachBtn" title="Attach file">📎</button>
+
+  <div class="input-wrapper">
+    <div
+      contenteditable="true"
+      class="input"
+      id="input"
+      role="textbox"
+      aria-label="Message input"
+      placeholder="Send a message..."
+    ></div>
+
+    <button class="send" id="send" title="Send message">➤</button>
+  </div>
+
+  <button class="icon-btn" id="micBtn" title="Voice input">🎤</button>
+</div>
+
     </main>
   </div>
 
